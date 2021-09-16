@@ -10,7 +10,7 @@ import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInUserWidget extends StatefulWidget {
-  final Function onGetUserProfile;
+  final Function(LinkedInUserModel, Response ) onGetUserProfile;
   final Function catchError;
   final String redirectUrl;
   final String clientId, clientSecret;
@@ -98,7 +98,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
                 linkedInUser.token = result.accessToken;
 
                 // Notify parent class / widget that we have user
-                widget.onGetUserProfile(linkedInUser,[basicProfile.body]);
+                widget.onGetUserProfile(linkedInUser, basicProfile);
               });
             });
           } else {

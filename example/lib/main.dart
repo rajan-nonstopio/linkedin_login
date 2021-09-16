@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/linkedin_login.dart';
+import 'package:http/http.dart';
 
 void main() => runApp(MyApp());
 
@@ -78,7 +79,7 @@ class _LinkedInProfileExamplePageState
                       redirectUrl: redirectUrl,
                       clientId: clientId,
                       clientSecret: clientSecret,
-                      projection:  [
+                      projection: [
                         ProjectionParameters.id,
                         ProjectionParameters.localizedFirstName,
                         ProjectionParameters.localizedLastName,
@@ -86,7 +87,8 @@ class _LinkedInProfileExamplePageState
                         ProjectionParameters.lastName,
                         ProjectionParameters.profilePicture,
                       ],
-                      onGetUserProfile: (LinkedInUserModel linkedInUser) {
+                      onGetUserProfile:
+                          (LinkedInUserModel linkedInUser, Response response) {
                         print('Access token ${linkedInUser.token.accessToken}');
 
                         print('User id: ${linkedInUser.userId}');
@@ -96,7 +98,12 @@ class _LinkedInProfileExamplePageState
                           lastName: linkedInUser?.lastName?.localized?.label,
                           email: linkedInUser
                               ?.email?.elements[0]?.handleDeep?.emailAddress,
-                          profileImageUrl: linkedInUser?.profilePicture?.displayImageContent?.elements[0]?.identifiers[0]?.identifier,
+                          profileImageUrl: linkedInUser
+                              ?.profilePicture
+                              ?.displayImageContent
+                              ?.elements[0]
+                              ?.identifiers[0]
+                              ?.identifier,
                         );
 
                         setState(() {
