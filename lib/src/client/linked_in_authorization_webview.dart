@@ -12,6 +12,8 @@ import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../linkedin_login.dart';
+
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInAuthorization extends StatefulWidget {
@@ -20,6 +22,7 @@ class LinkedInAuthorization extends StatefulWidget {
   final String clientId, clientSecret;
   final PreferredSizeWidget appBar;
   final bool destroySession;
+  final List<String> additionsScopes;
 
   // just in case that frontend in your team has changed redirect url
   final String frontendRedirectUrl;
@@ -29,6 +32,7 @@ class LinkedInAuthorization extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     @required this.clientSecret,
+    this.additionsScopes,
     this.appBar,
     this.destroySession,
     this.frontendRedirectUrl,
@@ -44,8 +48,13 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
   StreamSubscription<String> _onUrlChanged;
   AuthorizationCodeResponse authorizationCodeResponse;
 
+  List<String> fixesScopes = [
+    ScopeParameters.rLiteProfile,
+    ScopeParameters.rEmailAddress
+  ];
   String clientState, loginUrl;
 
+  List<String> scopes;
   @override
   void dispose() {
     _onUrlChanged.cancel();
@@ -57,6 +66,10 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
   void initState() {
     super.initState();
 
+    scopes = [
+      ...fixesScopes,
+      ...widget.additionsScopes?.where((e) => !(fixesScopes.contains(e))) ?? []
+    ];
     clientState = Uuid().v4();
 
     flutterWebViewPlugin.close();
@@ -66,7 +79,7 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
         '&client_id=${widget.clientId}'
         '&state=$clientState'
         '&redirect_uri=${widget.redirectUrl}'
-        '&scope=r_liteprofile%20r_emailaddress';
+        '&scope=${scopes.join('%20')}';
 
     // Add a listener to on url changed
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {

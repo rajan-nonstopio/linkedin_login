@@ -17,6 +17,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final PreferredSizeWidget appBar;
   final bool destroySession;
   final List<String> projection;
+  final List<String> additionsScopes;
 
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
@@ -34,6 +35,7 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.firstName,
       ProjectionParameters.lastName,
     ],
+    this.additionsScopes,
   })  : assert(onGetUserProfile != null),
         assert(redirectUrl != null),
         assert(clientId != null),
@@ -66,6 +68,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         redirectUrl: widget.redirectUrl,
         clientSecret: widget.clientSecret,
         clientId: widget.clientId,
+        additionsScopes: widget.additionsScopes,
         appBar: widget.appBar,
         onCallBack: (AuthorizationCodeResponse result) {
           if (result != null && result.accessToken != null) {
@@ -95,7 +98,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
                 linkedInUser.token = result.accessToken;
 
                 // Notify parent class / widget that we have user
-                widget.onGetUserProfile(linkedInUser);
+                widget.onGetUserProfile(linkedInUser,[basicProfile.body]);
               });
             });
           } else {
