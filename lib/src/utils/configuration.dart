@@ -23,10 +23,12 @@ class AccessCodeConfiguration implements Config {
     required this.clientSecretParam,
     required this.projectionParam,
     required this.urlState,
+    required this.scopesParam,
   });
 
   final String? clientSecretParam;
   final List<String> projectionParam;
+  final List<String> scopesParam;
   final String? redirectUrlParam;
   final String? clientIdParam;
   final String urlState;
@@ -46,6 +48,8 @@ class AccessCodeConfiguration implements Config {
   @override
   String? get redirectUrl => redirectUrlParam;
 
+  String get scopes => '${scopesParam.join('%20')}';
+
   @override
   String get state => urlState;
 
@@ -55,7 +59,7 @@ class AccessCodeConfiguration implements Config {
       '&client_id=$clientId'
       '&state=$urlState'
       '&redirect_uri=$redirectUrl'
-      '&scope=r_liteprofile%20r_emailaddress';
+      '&scope=$scopes';
 
   @override
   bool isCurrentUrlMatchToRedirection(String url) => _isRedirectionUrl(url);

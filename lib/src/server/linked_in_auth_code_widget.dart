@@ -19,10 +19,12 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
+    this.additionsScopes,
   });
 
   final Function(AuthorizationSucceededAction)? onGetAuthCode;
   final Function(AuthorizationFailedAction) onError;
+  final List<String>? additionsScopes;
   final String? redirectUrl;
   final String? clientId;
   final AppBar? appBar;

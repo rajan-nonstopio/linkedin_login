@@ -92,7 +92,7 @@ class LinkedInApi {
     final response = await _get(endpoint, token!, client);
 
     log('LinkedInAuth-steps: trying to fetchProfile DONE');
-
+    log(response);
     return LinkedInUserModel.fromJson(response);
   }
 

@@ -15,9 +15,11 @@ class LinkedInWebViewHandler extends StatefulWidget {
     this.appBar,
     this.destroySession = false,
     this.onCookieClear,
+    this.additionsScopes,
     this.onWebViewCreated, // this is just for testing purpose
   });
 
+  final List<String>? additionsScopes;
   final bool? destroySession;
   final PreferredSizeWidget? appBar;
   final Function(WebViewController)? onWebViewCreated;

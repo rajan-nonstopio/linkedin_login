@@ -21,13 +21,8 @@ class LinkedInUserWidget extends StatefulWidget {
     this.onError,
     this.destroySession = false,
     this.appBar,
-    this.projection = const [
-      ProjectionParameters.id,
-      ProjectionParameters.localizedFirstName,
-      ProjectionParameters.localizedLastName,
-      ProjectionParameters.firstName,
-      ProjectionParameters.lastName,
-    ],
+    this.projection = ProjectionParameters.projectionWithoutPicture,
+    this.additionsScopes = ScopeParameters.deafultProfile,
   }) : assert(projection.isNotEmpty);
 
   final Function(UserSucceededAction)? onGetUserProfile;
@@ -37,7 +32,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final PreferredSizeWidget? appBar;
   final bool? destroySession;
   final List<String> projection;
-
+  final List<String> additionsScopes;
   @override
   State createState() => _LinkedInUserWidgetState();
 }
@@ -58,6 +53,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         clientSecretParam: widget.clientSecret,
         clientIdParam: widget.clientId,
         redirectUrlParam: widget.redirectUrl,
+        scopesParam: widget.additionsScopes,
         urlState: Uuid().v4(),
       ),
     );

@@ -79,14 +79,7 @@ class _LinkedInProfileExamplePageState
                     redirectUrl: redirectUrl,
                     clientId: clientId,
                     clientSecret: clientSecret,
-                    projection: [
-                      ProjectionParameters.id,
-                      ProjectionParameters.localizedFirstName,
-                      ProjectionParameters.localizedLastName,
-                      ProjectionParameters.firstName,
-                      ProjectionParameters.lastName,
-                      ProjectionParameters.profilePicture,
-                    ],
+                    projection: ProjectionParameters.fullProjection,
                     onError: (UserFailedAction e) {
                       print('Error: ${e.toString()}');
                       print('Error: ${e.stackTrace.toString()}');
