@@ -19,6 +19,9 @@ class LinkedInUserModel {
     this.userId,
     this.localizedFirstName,
     this.localizedLastName,
+    this.headline,
+    this.localizedHeadline,
+    this.vanityName,
   });
 
   /// Convert response from API to [LinkedInUserModel] object
@@ -29,31 +32,40 @@ class LinkedInUserModel {
     final localizedFirstName = json['localizedFirstName'];
     final localizedLastName = json['localizedLastName'];
     final userId = json['id'];
+    final vanityName = json['vanityName'];
+    final localizedHeadline = json['localizedHeadline'];
+    final headline = json['headline'];
 
     return LinkedInUserModel(
       firstName:
           firstName != null ? LinkedInPersonalInfo.fromJson(firstName) : null,
       lastName:
           lastName != null ? LinkedInPersonalInfo.fromJson(lastName) : null,
+      headline:
+          headline != null ? LinkedInPersonalInfo.fromJson(headline) : null,
       profilePicture: profilePicture != null
           ? LinkedInProfilePicture.fromJson(profilePicture)
           : null,
       userId: userId,
       localizedFirstName: localizedFirstName,
       localizedLastName: localizedLastName,
+      localizedHeadline: localizedHeadline,
+      vanityName: vanityName,
     );
   }
 
-  final LinkedInPersonalInfo? firstName, lastName;
+  final LinkedInPersonalInfo? firstName, lastName, headline;
   final LinkedInProfilePicture? profilePicture;
   final String? userId;
   final String? localizedFirstName, localizedLastName;
   LinkedInProfileEmail? email;
   late LinkedInTokenObject token;
+  final String? vanityName;
+  final String? localizedHeadline;
 
   @override
   String toString() {
-    return 'LinkedInUserModel{firstName: $firstName, lastName: $lastName, profilePicture: $profilePicture, userId: $userId, localizedFirstName: $localizedFirstName, localizedLastName: $localizedLastName, email: $email, token: $token}';
+    return 'LinkedInUserModel{firstName: $firstName, lastName: $lastName, profilePicture: $profilePicture, userId: $userId, localizedFirstName: $localizedFirstName, localizedLastName: $localizedLastName, email: $email, token: $token, vanityName :$vanityName, localizedLastHeadline: $localizedHeadline, headline : $headline }';
   }
 }
 
