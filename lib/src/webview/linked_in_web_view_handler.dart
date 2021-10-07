@@ -4,7 +4,7 @@ import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webviewx/webviewx.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
@@ -22,7 +22,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
   final List<String>? additionsScopes;
   final bool? destroySession;
   final PreferredSizeWidget? appBar;
-  final Function(WebViewController)? onWebViewCreated;
+  final Function(WebViewXController)? onWebViewCreated;
   final Function(DirectionUrlMatch) onUrlMatch;
   final Function(bool)? onCookieClear;
 
@@ -31,8 +31,8 @@ class LinkedInWebViewHandler extends StatefulWidget {
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
-  WebViewController? webViewController;
-  final CookieManager cookieManager = CookieManager();
+  WebViewXController? webViewController;
+  // final CookieManager cookieManager = CookieManager();
 
   @override
   void initState() {
@@ -40,10 +40,10 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
     if (widget.destroySession!) {
       log('LinkedInAuth-steps: cache clearing... ');
-      cookieManager.clearCookies().then((value) {
-        widget.onCookieClear?.call(true);
-        log('LinkedInAuth-steps: cache clearing... DONE');
-      });
+      // cookieManager.clearCookies().then((value) {
+      //   widget.onCookieClear?.call(true);
+      //   log('LinkedInAuth-steps: cache clearing... DONE');
+      // });
     }
   }
 
@@ -54,10 +54,12 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
       appBar: widget.appBar,
       body: Builder(
         builder: (BuildContext context) {
-          return WebView(
-            initialUrl: viewModel.initialUrl(),
+          return WebViewX(
+          height: 500,
+          width: 200,
+          initialContent:viewModel.initialUrl(),
             javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) async {
+            onWebViewCreated: (WebViewXController webViewController) async {
               log('LinkedInAuth-steps: onWebViewCreated ... ');
 
               widget.onWebViewCreated?.call(webViewController);
@@ -68,22 +70,22 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
               log('LinkedInAuth-steps: navigationDelegate ... ');
               final isMatch = viewModel.isUrlMatchingToRedirection(
                 context,
-                request.url,
+                request.content.source,
               );
               log(
                 'LinkedInAuth-steps: navigationDelegate '
-                '[currentUrL: ${request.url}, isCurrentMatch: $isMatch]',
+                '[currentUrL: ${request.content.source}, isCurrentMatch: $isMatch]',
               );
 
               if (isMatch) {
-                widget.onUrlMatch(viewModel.getUrlConfiguration(request.url));
+                widget.onUrlMatch(viewModel.getUrlConfiguration(request.content.source));
                 log('Navigation delegate prevent... done');
                 return NavigationDecision.prevent;
               }
 
               return NavigationDecision.navigate;
             },
-            gestureNavigationEnabled: false,
+            ignoreAllGestures: true,
           );
         },
       ),

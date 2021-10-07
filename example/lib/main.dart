@@ -8,9 +8,9 @@ void main() => runApp(MyApp());
 // You need to add your own data from LinkedIn application
 // From: https://www.linkedin.com/developers/
 // Please read step 1 from this link https://developer.linkedin.com/docs/oauth2
-const String redirectUrl = 'https://www.youtube.com/callback';
-const String clientId = '776rnw4e4izlvg';
-const String clientSecret = 'rQEgboUHMLcQi59v';
+const String redirectUrl = 'https://nonstopio.com/auth/linkedin/callback';
+const String clientId = '781my2y8f895bz';
+const String clientSecret = 'qGuR18TzmyvFfneq';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
