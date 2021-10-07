@@ -4,6 +4,7 @@ import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
+import 'package:webview_flutter/webview_flutter.dart' as view;
 import 'package:webviewx/webviewx.dart';
 
 /// Class will fetch code and access token from the user
@@ -32,7 +33,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   WebViewXController? webViewController;
-  // final CookieManager cookieManager = CookieManager();
+  final view.CookieManager cookieManager = view.CookieManager();
 
   @override
   void initState() {
@@ -40,10 +41,10 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
     if (widget.destroySession!) {
       log('LinkedInAuth-steps: cache clearing... ');
-      // cookieManager.clearCookies().then((value) {
-      //   widget.onCookieClear?.call(true);
-      //   log('LinkedInAuth-steps: cache clearing... DONE');
-      // });
+      cookieManager.clearCookies().then((value) {
+        widget.onCookieClear?.call(true);
+        log('LinkedInAuth-steps: cache clearing... DONE');
+      });
     }
   }
 
@@ -85,7 +86,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
               return NavigationDecision.navigate;
             },
-            ignoreAllGestures: true,
+            ignoreAllGestures: false,
           );
         },
       ),

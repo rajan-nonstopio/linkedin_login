@@ -63,9 +63,9 @@ class SecretLogger {
   }) {
     final msg = '$name: $message ${error ?? ''}';
 
-    if (!Debug().isRelease) {
+    // if (!Debug().isRelease) {
       debugPrint(msg);
-    }
+    // }
   }
 
   void logError(
